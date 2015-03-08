@@ -72,7 +72,7 @@ public class ProductServlet {
             }
         }
         System.out.println(mapKeyValue);
-        doUpdate("INSERT INTO product (name, description, quantity) VALUES ( ?, ?, ?)",
+        doPostOrPutOrDelete("INSERT INTO product (name, description, quantity) VALUES ( ?, ?, ?)",
                 mapKeyValue.get("name"), mapKeyValue.get("description"), mapKeyValue.get("quantity"));
     }
 
@@ -96,7 +96,7 @@ public class ProductServlet {
             }
         }
         System.out.println(mapKayValue);
-        doUpdate("UPDATE PRODUCT SET productID = ?, name = ?, description = ?, quantity = ? WHERE productID = ?",
+        doPostOrPutOrDelete("UPDATE PRODUCT SET productID = ?, name = ?, description = ?, quantity = ? WHERE productID = ?",
                 id, mapKayValue.get("name"), mapKayValue.get("description"), mapKayValue.get("quantity"), id);
 
     }
@@ -104,10 +104,10 @@ public class ProductServlet {
     @DELETE
     @Path("{id}")
     public void doDelete(@PathParam("id") String id, String str) {
-        doUpdate("DELETE FROM product WHERE productID = ?", id);
+        doPostOrPutOrDelete("DELETE FROM product WHERE productID = ?", id);
     }
 
-    private void doUpdate(String query, String... params) {
+    private void doPostOrPutOrDelete(String query, String... params) {
         try (Connection conn = getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(query);
             for (int i = 1; i <= params.length; i++) {
@@ -117,6 +117,7 @@ public class ProductServlet {
         } catch (SQLException ex) {
             Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        getResults("SELECT * FROM product");
     }
 
     private Connection getConnection() throws SQLException {
