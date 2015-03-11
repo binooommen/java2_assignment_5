@@ -93,11 +93,15 @@ public class ProductServlet {
                     val = parser.getString();
                     mapKayValue.put(key, val);
                     break;
+                case VALUE_NUMBER:
+                    val = parser.getString();
+                    mapKayValue.put(key, val);
+                    break;
             }
         }
         System.out.println(mapKayValue);
-        doPostOrPutOrDelete("UPDATE PRODUCT SET productID = ?, name = ?, description = ?, quantity = ? WHERE productID = ?",
-                id, mapKayValue.get("name"), mapKayValue.get("description"), mapKayValue.get("quantity"), id);
+        doPostOrPutOrDelete("UPDATE PRODUCT SET name = ?, description = ?, quantity = ? WHERE productID = ?",
+                mapKayValue.get("name"), mapKayValue.get("description"), mapKayValue.get("quantity"), id);
 
     }
 
